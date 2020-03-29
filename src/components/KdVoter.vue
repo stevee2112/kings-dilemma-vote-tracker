@@ -3,8 +3,7 @@
 		'alert-secondary': vote == '',
 		'alert-danger' : vote == 'nay',
 		'alert-primary' : vote == 'aye',
-		'alert-light' : vote == 'passPower',
-		'alert-light' : vote == 'passModerator',
+		'alert-light' : (vote == 'passPower' || vote == 'passModerator'),
 	}" role="alert">
 		<div>
 		  <div class="row">

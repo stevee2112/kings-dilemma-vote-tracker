@@ -133,8 +133,6 @@ export default {
 			this.totalNay += voteData.power;
 		}
 
-		console.log(voteData);
-
 		// Move leader token
 		if (totalVoted > this.highestVote) {
 			this.highestVote = totalVoted;
@@ -151,7 +149,8 @@ export default {
 		}
 
  		var nextPlayer = this.getNext();
-		if (nextPlayer == this.currentLeader) {
+
+		if (nextPlayer == this.currentLeader || nextPlayer == this.currentPlayer) {
 			this.voting = false;
 		} else {
 			this.currentPlayer = nextPlayer;
