@@ -1,21 +1,21 @@
 <template>
 	<div class="alert alert-warning" role="alert">
-		<div class="container">
+		<div>
 		  <div class="row">
-			<div class="col">
-			  <h1>Leader</h1>
+			<div class="col-2">
+			  <h2>Leader</h2>
 			</div>
-			<div class="col">
-			  <h1>Player</h1>
+			<div class="col-2">
+			  <h2>Player</h2>
 			</div>
-			<div class="col">
-			  <h1>Vote</h1>
+			<div class="col-4">
+			  <h2>Vote</h2>
 			</div>
-			<div class="col">
-			  <h1>Power</h1>
+			<div class="col-2">
+			  <h2>Power</h2>
 			</div>
-			<div class="col">
-			  <h1>Moderator</h1>
+			<div class="col-2">
+			  <h2>Moderator</h2>
 			</div>
 		  </div>
 		</div>

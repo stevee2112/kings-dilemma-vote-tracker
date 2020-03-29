@@ -6,24 +6,24 @@
 		'alert-light' : vote == 'passPower',
 		'alert-light' : vote == 'passModerator',
 	}" role="alert">
-		<div class="container">
+		<div>
 		  <div class="row">
-			<div class="col">
-			  <h1>{{ leader ? "X" : "" }}</h1>
+			<div class="col-2">
+			  <h2>{{ leader ? "X" : "" }}</h2>
 			</div>
-			<div class="col">
-			  <h1>{{ displayName }}</h1>
+			<div class="col-2">
+			  <h2>{{ displayName }}</h2>
 			</div>
-			<div class="col">
-			  <h1><span :hidden="active == true">{{ displayVote }}</span></h1>
+			<div class="col-4">
+			  <h2><span :hidden="active == true">{{ displayVote }}</span></h2>
 			  <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="this.makeIdRef('voteModal')" :hidden="(vote != '') || (active == false)">Vote</button>
 			  <button type="button" class="btn btn-primary" data-toggle="modal" :data-target="this.makeIdRef('voteModal')" :hidden="(vote == '') || (active == false)">Add Power</button>
 			</div>
-			<div class="col">
-			  <h1>{{ power > 0 ? power : ""  }}</h1>
+			<div class="col-2">
+			  <h2>{{ power > 0 ? power : ""  }}</h2>
 			</div>
-			<div class="col">
-			  <h1>{{ moderator ? "X" : ""}}</h1>
+			<div class="col-2">
+			  <h2>{{ moderator ? "X" : ""}}</h2>
 			</div>
 		  </div>
 		</div>
@@ -37,7 +37,7 @@
 			</button>
 		  </div>
 		  <div class="modal-body">
-			<form>
+			<form @submit.prevent>
 			  <fieldset class="form-group" :hidden="vote != ''">
 				<div class="row">
 				  <div class="col-sm-10">
@@ -71,7 +71,7 @@
 			  <div class="form-group row" :hidden="inputVote == 'passPower' || inputVote == 'passModerator'">
 				<label for="inputName" class="col-sm-2 col-form-label">Power</label>
 				<div class="col-sm-10" hid>
-				  <input type="text" class="form-control" :id="this.makeId('powerInput')" v-model="inputPower" placeholder="Power">
+				  <input type="text" class="form-control" :id="this.makeId('powerInput')" ref="inputPower" v-model="inputPower" placeholder="Power" v-on:keyup.enter="submitVote">
 				</div>
 			  </div>
 			</form>
@@ -102,9 +102,17 @@ export default {
 	  moderator: Boolean,
 	  active: Boolean,
   },
+  watch: { 
+	vote: function(newVal) {
+	  this.inputVote = newVal; 
+	}
+  },
+  mounted() {
+    $(this.$refs.voteModal).on("shown.bs.modal", this.setPowerFocus)
+  },
   data: function() {
 	return {
-		uuid:  uuid(),
+		uuid: uuid(),
 		inputVote: this.vote,
 		inputPower: "",
 		
@@ -127,6 +135,9 @@ export default {
 	}
   },
   methods: {
+	setPowerFocus: function() {
+		this.$refs.inputPower.focus();
+	},
 	makeIdRef: function(id) {
 		return "#" + this.makeId(id);
 	},
@@ -134,11 +145,15 @@ export default {
 		return id + this.uuid;
 	},
 	submitVote: function() {
+		if (this.inputPower == "") {
+			this.inputPower = 0;
+		}
 		this.$emit('voted', {
 			player: this.playerIndex,
 			vote: this.inputVote,
 			power: parseInt(this.inputPower)
 		});
+		this.inputPower = "";
 		$(this.makeIdRef("voteModal")).modal('hide');
 	}
   }
